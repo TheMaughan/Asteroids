@@ -51,7 +51,7 @@ class Place_Obj(ABC): #- All travling objects share these same atrabutes:
         self.center = Point()
         self.velocity = Velocity()
         self.alive = True
-        self.radius = 0.0
+        self.size = None
         self.create()
 
     @abstractmethod
@@ -74,20 +74,60 @@ class Place_Obj(ABC): #- All travling objects share these same atrabutes:
     def create(self): #- Set dementions for the target to draw at a location:
         pass
 
-class Asteroids(Place_Obj, ABC): #- Sets the design for the Target template
+class Asteroids(Place_Obj, ABC): #- Sets the design for the Asteroid template
     def __init__(self): #- Set perameters
         super().__init__()
-        self.radius = TARGET_RADIUS
+        self.size = None
+        self.angle = 0
     @abstractmethod
     def draw(self): #- Draw
         pass
+
+    def rotate(self):
+        pass
+
     @abstractmethod
     def hit(self): #- Kill on event
         pass
     @abstractmethod
     def create(self): #- Create at location based on random generator perameters:
         pass
+
+class Asteroid_Sml(Target):
+    def __init__(self):
+        super().__init__()
+        self.angle = 0
+    #- Set dementions for the Safe_Target to draw:
+    def draw(self):
+        # This will load the graphics file into an arcade texture object
+		texture = arcade.load_texture("small.png")
+        	
+		# This will draw the texture object.  The first 2 parameters describe where the
+		# object should be drawn.  The next 2 parameters describe the width and height of
+		# the object.  In this program, we want to draw the actual size of the picture.
+		# We can do this by using the width and height member data in the texture object.
+		# The next parameter specifies the texture object we are drawing.  Since we have to
+		# rotate the object during game play, we will specify an additional rotation parameter.
+		arcade.draw_texture_rectangle(self.center.x, self.center.y, texture.width, texture.height, texture, self.angle)
+
+    def rotate(self):
+        self.angle += 5
+        
+
+    #- Kill the target on collision event.
+    def hit(self):
+        self.alive = False
+        return 1
     
+    #- Set dementions for the target to draw at a location.
+    def create(self):
+        self.center.x = SCREEN_WIDTH - self.radius
+        self.center.y = random.randint(SCREEN_HEIGHT // 2, SCREEN_HEIGHT)
+        self.velocity.dx = random.uniform(-1, -5) #- Manipulate speed of ball here (min speed, max speed)
+        self.velocity.dy = random.uniform(-2, 5)
+        self.angle += 1
+
+"""
 class Asteroid_Med(Target):
     def __init__(self):
         super().__init__()
@@ -160,27 +200,6 @@ class Asteroid_Lrg(Target):
                 pointer += 1
         return pointer
 
-class Asteroid_Sml(Target):
-    def __init__(self):
-        super().__init__()
-        
-    #- Set dementions for the Safe_Target to draw:
-    def draw(self):
-        arcade.draw_circle_filled(self.center.x, self.center.y, self.radius, arcade.color.BLUE)
-
-    #- Kill the target on collision event.
-    def hit(self):
-        self.alive = False
-        return 1
-    
-    #- Set dementions for the target to draw at a location.
-    def create(self):
-        self.center.x = SCREEN_WIDTH - self.radius
-        self.center.y = random.randint(SCREEN_HEIGHT // 2, SCREEN_HEIGHT)
-        self.velocity.dx = random.uniform(-1, -5) #- Manipulate speed of ball here (min speed, max speed)
-        self.velocity.dy = random.uniform(-2, 5)
-
-
 class Bullet(Place_Obj):
     def __init__(self):
         super().__init__()
@@ -204,7 +223,7 @@ class Bullet(Place_Obj):
         self.radius = BULLET_RADIUS
         self.color = arcade.color.BLACK
         self.alive = True
-
+"""
 
 class Ship:
     """
@@ -241,7 +260,11 @@ class Game(arcade.Window):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SMOKY_BLACK)
 
+        self.asteroids = Asteroids()
+
         self.held_keys = set()
+
+        self.asteroids = []
 
         # TODO: declare anything here you need the game class to track
 
@@ -263,9 +286,21 @@ class Game(arcade.Window):
         """
         self.check_keys()
 
+        for A in self.asteroid:
+            asteroid.advance
+            asteroid.rotate
+
+
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
+
+    def create_asteroids(self):
+        small = Asteroid_Sml()
+
+        small.create()
+
+        self.asteroids.append(small)
 
     def check_keys(self):
         """
