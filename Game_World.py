@@ -8,6 +8,7 @@ This program implements a version of the asteroids game.
 import arcade, math, random
 from abc import abstractmethod
 from abc import ABC
+import Asteroid_Obj
 
 # These are Global constants to use throughout the game
 SCREEN_WIDTH = 800
@@ -36,7 +37,8 @@ SMALL_ROCK_RADIUS = 2
  
 #import Object_Foundation
 #from Object_Foundation import *
-from Asteroid_Obj import Rock_Lrg
+#from Asteroid_Obj import Rock_Lrg
+
 #import Ship_Obj
 #import Projectile_Obj
 
@@ -60,12 +62,15 @@ class Game(arcade.Window):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SMOKY_BLACK)
         
+        #self.rock = Asteroid_Obj.Rock_Lrg()
+        
 
         #self.rock = Asteroid_Obj.A_Foundation
 
         self.held_keys = set()
 
-        self.asteroids = []
+        self.rocks = []
+        self.create_asteroids()
 
         # TODO: declare anything here you need the game class to track
 
@@ -74,11 +79,13 @@ class Game(arcade.Window):
         Called automatically by the arcade framework.
         Handles the responsibility of drawing all elements.
         """
-
+        
         # clear the screen to begin drawing
         arcade.start_render()
 
-        for rock in self.asteroids:
+        #self.rock.draw()
+
+        for rock in self.rocks:
             rock.draw()
 
         # TODO: draw each object
@@ -88,11 +95,10 @@ class Game(arcade.Window):
         Update each object in the game.
         :param delta_time: tells us how much time has actually elapsed
         """
-        from Asteroid_Obj import Rock_Lrg
 
         self.check_keys()
 
-        for rock in self.asteroids:
+        for rock in self.rocks:
             rock.advance()
 
 
@@ -101,17 +107,16 @@ class Game(arcade.Window):
         # TODO: Check for collisions
 
     def create_asteroids(self):
-        from Asteroid_Obj import Rock_Lrg
+        #import Asteroid_Obj
+        lrg = Asteroid_Obj.Rock_Lrg()
+        #med = Asteroid_Obj.Rock_Med()
+        #sml = Asteroid_Obj.Rock_Sml()
 
-        lrg = Rock_Lrg
-        #med = Asteroid_Obj.Rock_Med
-        #sml = Asteroid_Obj.Rock_Sml
-
-        lrg.Rock_Lrg.create
+        lrg.create()
         #med.Asteroid_Obj.create
         #sml.Asteroid_Obj.create
 
-        self.asteroids.append(lrg)
+        self.rocks.append(lrg)
         #self.asteroids.append(med)
         #self.asteroids.append(sml)
 

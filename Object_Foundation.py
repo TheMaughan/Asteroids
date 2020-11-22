@@ -12,17 +12,11 @@ class Velocity: #- Object progression
         self.dx = 0
         self.dy = 0
 
-class Angle:
-    def __init__(self):
-        self.degrees = 90
-
 class Object(ABC): #- All travling objects share these same atrabutes:
     def __init__(self):
         self.center = Point()
         self.velocity = Velocity()
-        self.angle = Angle()
         self.alive = True
-        #self.size = None
         self.create()
 
     @abstractmethod

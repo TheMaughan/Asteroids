@@ -1,6 +1,4 @@
 import arcade, math, random
-import Object_Foundation
-from Object_Foundation import Object #- Main Parent Module
 from abc import abstractmethod
 from abc import ABC
  
@@ -20,10 +18,54 @@ MEDIUM_ROCK_RADIUS = 5
 SMALL_ROCK_SPIN = 5
 SMALL_ROCK_RADIUS = 2
 
+#from Object_Foundation import Point, Velocity, Object #- Main Parent Modules
+
+
+class Point: #- Object Location
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+
+class Velocity: #- Object progression
+    def __init__(self):
+        self.dx = 0
+        self.dy = 0
+
+class Object(ABC): #- All travling objects share these same atrabutes:
+    def __init__(self):
+        self.center = Point()
+        self.velocity = Velocity()
+        self.alive = True
+        self.create()
+
+    @abstractmethod
+    def create(self): #- Set dementions for the target to draw at a location:
+        pass
+
+    @abstractmethod
+    def draw(self): #- Establish the physical properties:
+        pass #- Place the rotation angle progression here
+    
+    def advance(self): #- Progress/move in a straight line:
+        self.center.x += self.velocity.dx
+        self.center.y += self.velocity.dy
+
+    
+    def is_off_screen(self, SCREEN_WIDTH, SCREEN_HEIGHT): #- If event where object leaves the window, kill the object:
+        if (self.center.x < 0.0 or self.center.x > SCREEN_WIDTH):
+            return True
+        if (self.center.y < 0.0 or self.center.y > SCREEN_HEIGHT):
+            return True
+        return False
+
+
 
 class A_Foundation(Object, ABC): #- Sets the design for the Asteroid template
     def __init__(self): #- Set perameters
         super().__init__()
+        self.center = Point()
+        self.velocity = Velocity()
+        self.angle = 0
     
     @abstractmethod
     def draw(self): #- Draw
@@ -44,13 +86,12 @@ class A_Foundation(Object, ABC): #- Sets the design for the Asteroid template
 class Rock_Lrg(A_Foundation):
     def __init__(self):
         super().__init__()
-        
 
     #- Set dementions for the target to draw:
     def draw(self):
         # This will load the graphics file into an arcade texture object
-        texture = arcade.load_texture("large.png")
-        self.angle += 5
+        texture = arcade.load_texture("big.png")
+        #self.angle += 5
         
         # This will draw the texture object.  The first 2 parameters describe where the
         # object should be drawn.  The next 2 parameters describe the width and height of
@@ -58,7 +99,7 @@ class Rock_Lrg(A_Foundation):
         # We can do this by using the width and height member data in the texture object.
         # The next parameter specifies the texture object we are drawing.  Since we have to
         # rotate the object during game play, we will specify an additional rotation parameter.
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, texture.width, texture.height, texture, self.angle)
+        arcade.draw_texture_rectangle(self.center.x, self.center.y, texture.width, texture.height, texture)
         
 
     #- Kill target on collision event:
@@ -81,11 +122,11 @@ class Rock_Lrg(A_Foundation):
         
     #- Set dementions for the target to draw at a location:
     def create(self):
-        self.Object_Foundation.alive = True
-        self.Object_Foundation.center.x = 400
-        self.Object_Foundation.center.y = 300
-        self.Object_Foundation.velocity.dx = 1.5 #- Manipulate speed of rock here
-        self.Object_Foundation.velocity.dy = 1.5
+        self.alive = True
+        self.center.x = 400
+        self.center.y = 300
+        self.velocity.dx = 1.5 #- Manipulate speed of rock here
+        self.velocity.dy = 1.5
 
 
 """
