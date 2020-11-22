@@ -1,4 +1,4 @@
-import arcade, math, random 
+import arcade
 from abc import abstractmethod
 from abc import ABC
 
@@ -22,7 +22,7 @@ class Object(ABC): #- All travling objects share these same atrabutes:
         self.velocity = Velocity()
         self.angle = Angle()
         self.alive = True
-        self.size = None
+        #self.size = None
         self.create()
 
     @abstractmethod
@@ -31,7 +31,7 @@ class Object(ABC): #- All travling objects share these same atrabutes:
 
     @abstractmethod
     def draw(self): #- Establish the physical properties:
-        pass
+        pass #- Place the rotation angle progression here
     
     def advance(self): #- Progress/move in a straight line:
         self.center.x += self.velocity.dx

@@ -5,9 +5,7 @@ Co-Author: Bryce Maughan
 
 This program implements a version of the asteroids game.
 """
-import arcade
-import math
-import random
+import arcade, math, random
 from abc import abstractmethod
 from abc import ABC
 
@@ -35,53 +33,14 @@ MEDIUM_ROCK_RADIUS = 5
 SMALL_ROCK_SPIN = 5
 SMALL_ROCK_RADIUS = 2
 
-
-
-
-
-
-
-class Bullet(Place_Obj):
-    def __init__(self):
-        super().__init__()
-        #- Call the ceation of the bullet:
-        self.create()
-
-    def draw(self): #- Draw Ball with radius of 10 px:
-        arcade.draw_circle_filled(self.center.x, self.center.y, self.radius, self.color)
-
-    #- Sets the angle of the bullet tragectory and initiates the creation of the bullet.
-    def fire(self, angle: float):
-        self.alive = True
-        self.velocity.dx = math.cos(math.radians(angle)) * self.speed
-        self.velocity.dy = math.sin(math.radians(angle)) * self.speed
-    
-    #- Create the Bullet in the Rifle
-    def create(self): #- Set the perameters for the bullet
-        self.center.x = 0
-        self.center.y = 0
-        self.speed = BULLET_SPEED
-        self.radius = BULLET_RADIUS
-        self.color = arcade.color.BLACK
-        self.alive = True
-
-
-class Ship:
-    """
-    The rifle is a rectangle that tracks the mouse.
-    """
-    def __init__(self):
-        self.center = Point()
-        self.center.x = 0
-        self.center.y = 0
-
-        self.angle = 45
-
-    def draw(self):
-        arcade.draw_rectangle_filled(self.center.x, self.center.y, RIFLE_WIDTH, RIFLE_HEIGHT, RIFLE_COLOR, 360 - self.angle)
-
-
  
+#import Object_Foundation
+#from Object_Foundation import *
+from Asteroid_Obj import Rock_Lrg
+#import Ship_Obj
+#import Projectile_Obj
+
+
 class Game(arcade.Window):
     """
     This class handles all the game callbacks and interaction
@@ -100,8 +59,9 @@ class Game(arcade.Window):
         """
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SMOKY_BLACK)
+        
 
-        self.asteroids = Asteroids()
+        #self.rock = Asteroid_Obj.A_Foundation
 
         self.held_keys = set()
 
@@ -118,6 +78,9 @@ class Game(arcade.Window):
         # clear the screen to begin drawing
         arcade.start_render()
 
+        for rock in self.asteroids:
+            rock.draw()
+
         # TODO: draw each object
 
     def update(self, delta_time):
@@ -125,11 +88,12 @@ class Game(arcade.Window):
         Update each object in the game.
         :param delta_time: tells us how much time has actually elapsed
         """
+        from Asteroid_Obj import Rock_Lrg
+
         self.check_keys()
 
-        for A in self.asteroid:
-            asteroid.advance
-            asteroid.rotate
+        for rock in self.asteroids:
+            rock.advance()
 
 
         # TODO: Tell everything to advance or move forward one step in time
@@ -137,11 +101,19 @@ class Game(arcade.Window):
         # TODO: Check for collisions
 
     def create_asteroids(self):
-        small = Asteroid_Sml()
+        from Asteroid_Obj import Rock_Lrg
 
-        small.create()
+        lrg = Rock_Lrg
+        #med = Asteroid_Obj.Rock_Med
+        #sml = Asteroid_Obj.Rock_Sml
 
-        self.asteroids.append(small)
+        lrg.Rock_Lrg.create
+        #med.Asteroid_Obj.create
+        #sml.Asteroid_Obj.create
+
+        self.asteroids.append(lrg)
+        #self.asteroids.append(med)
+        #self.asteroids.append(sml)
 
     def check_keys(self):
         """
