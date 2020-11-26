@@ -65,11 +65,16 @@ class Game(arcade.Window):
         
         self.held_keys = set()
 
-        self.ship = []
+        self.ship = Ship_Obj.Ship()
 
         self.rocks = []
         self.create_asteroids()
-        self.create_ship()
+
+        # Track the current state of what key is pressed
+        self.left_pressed = False
+        self.right_pressed = False
+        self.up_pressed = False
+        self.down_pressed = False
 
         # TODO: declare anything here you need the game class to track
 
@@ -87,8 +92,7 @@ class Game(arcade.Window):
         for rock in self.rocks:
             rock.draw()
 
-        for ship in self.ship:
-            ship.draw()
+        self.ship.draw()
 
         # TODO: draw each object
 
@@ -100,6 +104,8 @@ class Game(arcade.Window):
 
         self.check_keys()
 
+        self.ship.advance()
+
         for rock in self.rocks:
             rock.advance()
 
@@ -107,13 +113,6 @@ class Game(arcade.Window):
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
-
-    def create_ship(self):
-        s = Ship_Obj.Ship()
-
-        s.create()
-
-        self.ship.append(s)
 
     def create_asteroids(self):
         #import Asteroid_Obj
@@ -134,18 +133,19 @@ class Game(arcade.Window):
         This function checks for keys that are being held down.
         You will need to put your own method calls in here.
         """
+        
         if arcade.key.LEFT in self.held_keys:
-            self.ship.append(Ship_Obj.Ship.advance_left)
-
+            self.ship.move_left()
+            
         if arcade.key.RIGHT in self.held_keys:
-            self.ship.append(Ship_Obj.Ship.advance_right)
-
+            self.ship.move_right()
+            
         if arcade.key.UP in self.held_keys:
-            self.ship.append(Ship_Obj.Ship.advance_up)
-
+            self.ship.move_up()
+            
         if arcade.key.DOWN in self.held_keys:
-            self.ship.append(Ship_Obj.Ship.advance_down)
-
+            self.ship.move_down()
+            
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
         #    pass
