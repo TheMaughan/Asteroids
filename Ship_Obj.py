@@ -28,34 +28,34 @@ class Ship(Object_Foundation.Object):
 
     @property
     def move_up(self):
-        return self._center.y
+        return self.center.y
     @move_up.setter
     def move_up(self):
         if self.center.y < SCREEN_HEIGHT + 5:
-            self._center.y += 0.25
+            self.center.y += 0.25
     @property
     def move_down(self):
-        return self._center.y
+        return self.center.y
     @move_down.setter
     def move_down(self):
         if self.center.y > -5:
-            self._center.y -= 0.25
+            self.center.y -= 0.25
     
     @property
     def move_left(self):
-        return self._center.y
+        return self.center.x
     @move_left.setter
     def move_left(self):
         if self.center.x > -5:
-            self._center.x -= 0.25
+            self.center.x -= 0.25
 
     @property
     def move_right(self):
-        return self._center.y
+        return self.center.x
     @move_right.setter
     def move_right(self):
         if self.center.x < SCREEN_WIDTH + 5:
-            self._center.x += 0.25
+            self.center.x += 0.25
 
 
     def draw(self):
