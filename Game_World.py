@@ -9,6 +9,7 @@ import arcade, math, random
 from abc import abstractmethod
 from abc import ABC
 import Asteroid_Obj
+import Ship_Obj
 
 # These are Global constants to use throughout the game
 SCREEN_WIDTH = 800
@@ -62,15 +63,13 @@ class Game(arcade.Window):
         super().__init__(width, height)
         arcade.set_background_color(arcade.color.SMOKY_BLACK)
         
-        #self.rock = Asteroid_Obj.Rock_Lrg()
-        
-
-        #self.rock = Asteroid_Obj.A_Foundation
-
         self.held_keys = set()
+
+        self.ship = []
 
         self.rocks = []
         self.create_asteroids()
+        self.create_ship()
 
         # TODO: declare anything here you need the game class to track
 
@@ -87,6 +86,9 @@ class Game(arcade.Window):
 
         for rock in self.rocks:
             rock.draw()
+
+        for ship in self.ship:
+            ship.draw()
 
         # TODO: draw each object
 
@@ -105,6 +107,13 @@ class Game(arcade.Window):
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
+
+    def create_ship(self):
+        s = Ship_Obj.Ship()
+
+        s.create()
+
+        self.ship.append(s)
 
     def create_asteroids(self):
         #import Asteroid_Obj
@@ -126,16 +135,16 @@ class Game(arcade.Window):
         You will need to put your own method calls in here.
         """
         if arcade.key.LEFT in self.held_keys:
-            pass
+            self.ship.append(Ship_Obj.Ship.advance_left)
 
         if arcade.key.RIGHT in self.held_keys:
-            pass
+            self.ship.append(Ship_Obj.Ship.advance_right)
 
         if arcade.key.UP in self.held_keys:
-            pass
+            self.ship.append(Ship_Obj.Ship.advance_up)
 
         if arcade.key.DOWN in self.held_keys:
-            pass
+            self.ship.append(Ship_Obj.Ship.advance_down)
 
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
@@ -147,7 +156,7 @@ class Game(arcade.Window):
         Puts the current key in the set of keys that are being held.
         You will need to add things here to handle firing the bullet.
         """
-        if self.ship.alive:
+        if self.ship:
             self.held_keys.add(key)
 
             if key == arcade.key.SPACE:

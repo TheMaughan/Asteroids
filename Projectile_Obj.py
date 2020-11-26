@@ -4,6 +4,9 @@ from abc import ABC
 import Object_Foundation #- Main Parent Module
 
 
+BULLET_RADIUS = 30
+BULLET_SPEED = 10
+BULLET_LIFE = 60
 
 
 class Bullet(Place_Obj):

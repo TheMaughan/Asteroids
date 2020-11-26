@@ -16,7 +16,6 @@ class Object(ABC): #- All travling objects share these same atrabutes:
     def __init__(self):
         self.center = Point()
         self.velocity = Velocity()
-        self.alive = True
         self.create()
 
     @abstractmethod
