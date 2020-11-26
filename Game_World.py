@@ -141,7 +141,7 @@ class Game(arcade.Window):
             self.ship.move_right()
             
         if arcade.key.UP in self.held_keys:
-            self.ship.move_up()
+            self.ship.y_up()
             
         if arcade.key.DOWN in self.held_keys:
             self.ship.move_down()
