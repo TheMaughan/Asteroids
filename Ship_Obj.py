@@ -1,6 +1,8 @@
 import arcade, math, random, arcade
 from abc import abstractmethod
 from abc import ABC
+
+from arcade import texture
 import Object_Foundation #- Main Parent Module
 
 SHIP_TURN_AMOUNT = 3
@@ -29,40 +31,19 @@ class Ship(Object_Foundation.Object):
         #self.x = 300
         #self.center_y = 200
 
-        self.dx = self.velocity.dx
-        self.dy = self.velocity.dy
-
     def create(self):
         self.center.x = 300
         self.center.y = 200
         self.velocity.dx = 0.0
-        self.velocity.dy = 0.25
-        self.alive = True
-
-        self.dx = self.velocity.dx
-        self.dy = self.velocity.dy
-
-        
+        self.velocity.dy = 0.0
+        self.alive = True        
         self.angle = 90
-
-    @property
-    def move_y(self):
-        return self._dy
-    @move_y.setter
-    def move_y(self, move):
-        if move < 0.0:
-            self._dy = 0.0
-        elif self.dy > MAX_SPEED:
-            self._dy = -MAX_SPEED
-        else:
-            self._dy = move
-
 
     def draw(self):
 
         self.sprite = arcade.load_texture("ship.png")
         
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, 360 - self.angle)
+        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, self.angle)
 
     def death_event(self):
         self.alive = False
