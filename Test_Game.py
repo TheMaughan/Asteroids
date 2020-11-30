@@ -8,10 +8,12 @@ This program implements a version of the asteroids game.
 import arcade, math, random
 from abc import abstractmethod
 from abc import ABC
+from arcade.color import FOREST_GREEN
+
+from arcade.gl.enums import MAX
 import Object_Foundation
 import Asteroid_Obj
-import Ship_Obj
-from Ship_Obj import Ship
+
 
 # These are Global constants to use throughout the game:
 SCREEN_WIDTH = 800
@@ -53,14 +55,9 @@ class Ship(Object_Foundation.Object):
     """
     The ship is a rectangle that tracks the mouse.
     """
-    def __init__(self, val):
+    def __init__(self):
         super().__init__()
-        #self.sprite = arcade.load_texture("Ship.png")
-        #self.x = 300
-        #self.center_y = 200
-        self.dx = self.velocity.dx
-        self.dy = self.velocity.dy
-
+        
     def create(self):
         self.center.x = 300
         self.center.y = 200
@@ -74,60 +71,29 @@ class Ship(Object_Foundation.Object):
         
         self.angle = 90
 
-    @property
     def move_up(self):
-        return self._dy
-    
-    
-    def move_up(self, val):
-        #val += SHIP_THRUST_AMOUNT
-
-        if val < 0.0:
-            self._dy = 0.0
-            
-        elif val > 3.0:
-            self._dy = 3.0
-        else:
-            self._dy = val
+        if self.center.y < SCREEN_HEIGHT - (30 // 2):
+            self.center.y += 0.25
         
-    @property
-    def move_down(self):
-        return self.dy
-    @move_down.setter
-    def move_down(self, val):
-        if val < -5:
-            self.dy = 0.0
-            
-        elif val > 3.0:
-            self.dy = 3.0
+    def up_friction(self):
+        if self.velocity.dy > FRICTION:
+            self.velocity.dy -= FRICTION
         else:
-            self.dy = val       
-    
-    @property
-    def move_left(self):
-        return self.dx
-    @move_left.setter
-    def move_left(self, val):
-        if val < -5:
-            self.dy = 0.0
-            
-        elif val > 3.0:
-            self.dy = 3.0
-        else:
-            self.dy = val
+            self.velocity.dy = 0
 
-    @property
-    def move_right(self):
-        return self.dx
-    @move_right.setter
-    def move_right(self, val):
-        if val < -5:
-            self.dy = 0.0
-            
-        elif val > 3.0:
-            self.dy = 3.0
-        else:
-            self.dy = val
+    def up_accel(self):
+        if self.velocity.dy > 0 and not self.velocity.dy < 0:
+            self.velocity.dy += ACCELERATION_RATE
+        
+    def up_max(self):
+        if self.velocity.dy > MAX_SPEED:
+            self.velocity.dy = MAX_SPEED
+
+
+
+    def move_down(self):
+        if self.center.y > 30 // 2:
+            self.center.y -= 0.25
 
 
     def draw(self):
@@ -160,16 +126,11 @@ class Game(arcade.Window):
         
         self.held_keys = set()
 
-        self.ship = Ship_Obj.Ship(0.25)
+        self.ship = Ship()
+        
 
         self.rocks = []
         self.create_asteroids()
-
-        # Track the current state of what key is pressed
-        self.left_pressed = False
-        self.right_pressed = False
-        self.up_pressed = False
-        self.down_pressed = False
 
         # TODO: declare anything here you need the game class to track
 
@@ -198,7 +159,7 @@ class Game(arcade.Window):
         """
 
         self.check_keys()
-
+            
         self.ship.advance()
 
         for rock in self.rocks:
@@ -208,6 +169,11 @@ class Game(arcade.Window):
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
+
+    def create_ship(self):
+        play = Ship()
+        play.create()
+        self.ship.append(play)
 
     def create_asteroids(self):
         #import Asteroid_Obj
@@ -230,16 +196,19 @@ class Game(arcade.Window):
         """
         
         if arcade.key.LEFT in self.held_keys:
-            self.ship.move_left
+            pass
             
         if arcade.key.RIGHT in self.held_keys:
-            self.ship.move_right
+            pass
             
         if arcade.key.UP in self.held_keys:
-            self.ship.dy
+            self.ship.move_up()
+            self.ship.up_accel()
+            self.ship.up_friction()
+            self.ship.up_max()
             
         if arcade.key.DOWN in self.held_keys:
-            self.ship.move_down
+            self.ship.move_down()
             
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
