@@ -66,11 +66,11 @@ class Game(arcade.Window):
         
         self.held_keys = set()
 
-        #self.ship = Ship_Obj.Ship()
-        self.ship = []
+        #self.ship = []
+        self.ship = Ship_Obj.Ship()
         self.rocks = []
         self.create_asteroids()
-        self.create_ship()
+        #self.create_ship()
 
         # Track the current state of what key is pressed
         self.left_pressed = False
@@ -94,8 +94,7 @@ class Game(arcade.Window):
         for rock in self.rocks:
             rock.draw()
 
-        for player in self.ship:
-            player.draw()
+        self.ship.draw()
 
         # TODO: draw each object
 
@@ -106,9 +105,7 @@ class Game(arcade.Window):
         """
 
         self.check_keys()
-
-        for player in self.ship:
-            player.advance()
+        self.ship.advance()
 
         for rock in self.rocks:
             rock.advance()
@@ -117,12 +114,15 @@ class Game(arcade.Window):
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
+        
+    """
     def create_ship(self):
         player = Ship_Obj.Ship()
 
         player.create()
 
         self.ship.append(player)
+    """
 
     def create_asteroids(self):
         #import Asteroid_Obj
@@ -145,17 +145,16 @@ class Game(arcade.Window):
         """
         
         if arcade.key.LEFT in self.held_keys:
-            self.ship.dx
+            self.ship.velocity.dx -= 1
             
         if arcade.key.RIGHT in self.held_keys:
-            self.ship.dx
+            self.ship.velocity.dx += 1
             
         if arcade.key.UP in self.held_keys:
-            self.ship.dy
+            self.ship.move_forward()
             
         if arcade.key.DOWN in self.held_keys:
-            for down in self.ship:
-                down.dy - 1
+            self.ship.move_backwards()
             
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:

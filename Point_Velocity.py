@@ -14,14 +14,15 @@ class Velocity: #- Object progression
         self.dx = 0.0
         self.dy = 0.0
     
+    #- This sets the accelaration of an object to 0.25 per iteration:
     @property
     def dy(self):
         return self._dy
     @dy.setter
     def dy(self, dy):
         if dy < 0.0:
-            self._dy = 0.0
-        elif dy > 0.25:
+            self._dy += -0.25
+        elif dy > 0.0:
             self._dy += 0.25
         else:
             self._dy = dy
@@ -32,16 +33,16 @@ class Velocity: #- Object progression
     @dx.setter
     def dx(self, dx):
         if dx < 0.0:
-            self._dx = 0.0
-        elif dx > 0.25:
-            self._dx = 0.25
+            self._dx += -0.25
+        elif dx > 0.0:
+            self._dx += 0.25
         else:
             self._dx = dx
     """
     def display(self):
         print("move: {}".format(self.dy))
     """
-   
+
 """
 def main():
     move = Velocity()

@@ -45,17 +45,27 @@ class Ship(Object_Foundation.Object):
         
         arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, self.angle)
 
+    def move_forward(self):
+        self.velocity.dy += 1
+
+    def move_backwards(self):
+        self.velocity.dy += -1
+
     def death_event(self):
         self.alive = False
 
     def display(self):
-        print("Moved: {}".format(self.dy))
+        print("Moved: {}".format(self.velocity.dy))
 
-
+"""
 def main():
     thrust = Ship()
-    thrust.dy
+    thrust.velocity.dy = 1
+    thrust.velocity.dy = 1
+    thrust.display()
+    thrust.velocity.dy = -1
     thrust.display()
 
 if __name__ == "__main__":
     main()
+"""
