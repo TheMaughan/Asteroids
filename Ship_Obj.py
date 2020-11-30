@@ -1,4 +1,4 @@
-import arcade, math, random 
+import arcade, math, random, arcade
 from abc import abstractmethod
 from abc import ABC
 import Object_Foundation #- Main Parent Module
@@ -19,52 +19,50 @@ class Ship(Object_Foundation.Object):
         #self.sprite = arcade.load_texture("Ship.png")
         #self.x = 300
         #self.center_y = 200
-        self.x = self.center.x
-        self.y = self.center.y
+        self.dx = self.velocity.dx
+        self.dy = self.velocity.dy
 
     def create(self):
-        self.alive = True
         self.center.x = 300
-        self.x = self.center.x
         self.center.y = 200
-        self.y = self.center.y
-        self.velocity.dy = 0.0
         self.velocity.dx = 0.0
+        self.velocity.dy = 0.0
+        self.alive = True
+        
+        self.dx = self.velocity.dx
+        
+        self.dy = self.velocity.dy
+        
         self.angle = 90
 
     @property
-    def y_up(self):
-        return self._y
+    def move_y(self):
+        return self._dy
+    
+    @move_y.setter
+    def move_y(self, val):
 
-    @y_up.setter
-    def y_up(self, y):
-        if self.y < 0.0:
-            self.y = 0.0
+        if val < 0.0:
+            self._dy = 0.0
+            
+        elif val > 3.0:
+            self._dy = 3.0
         else:
-            self._y = y
-    @property
-    def move_down(self):
-        return self._center_y
-    @move_down.setter
-    def move_down(self):
-        if self.centery > -5:
-            self._center_y -= 0.25
+            self._dy = val
     
     @property
-    def move_left(self):
-        return self._center_x
-    @move_left.setter
-    def move_left(self):
-        if self.center.x > -5:
-            self._center_x -= 0.25
-
-    @property
-    def move_right(self):
-        return self._center_x
-    @move_right.setter
-    def move_right(self):
-        if self.center.x < SCREEN_WIDTH + 5:
-            self._center_x += 0.25
+    def move_x(self):
+        return self._dx
+        
+    @move_x.setter
+    def move_x(self, val):
+        if val < 0.0:
+            self._dx = 0.0
+            
+        elif val > 3.0:
+            self._dx = 3.0
+        else:
+            self._dx = val
 
 
     def draw(self):
@@ -75,3 +73,11 @@ class Ship(Object_Foundation.Object):
 
     def death_event(self):
         self.alive = False
+
+
+def main():
+    thrust = Ship(SHIP_THRUST_AMOUNT)
+    print(thrust.dy)
+
+if __name__ == "__main__":
+    main()

@@ -8,11 +8,12 @@ This program implements a version of the asteroids game.
 import arcade, math, random
 from abc import abstractmethod
 from abc import ABC
+import Object_Foundation
 import Asteroid_Obj
 import Ship_Obj
 from Ship_Obj import Ship
 
-# These are Global constants to use throughout the game
+# These are Global constants to use throughout the game:
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
@@ -20,10 +21,21 @@ BULLET_RADIUS = 30
 BULLET_SPEED = 10
 BULLET_LIFE = 60
 
+#---------------------------------Ship:
 SHIP_TURN_AMOUNT = 3
 SHIP_THRUST_AMOUNT = 0.25
 SHIP_RADIUS = 30
 
+# Speed limit
+MAX_SPEED = 3.0
+
+# How fast we accelerate
+ACCELERATION_RATE = 0.1
+
+# How fast to slow down after we letr off the key
+FRICTION = 0.02
+
+#--------------------------------Asteroid:
 INITIAL_ROCK_COUNT = 5
 
 BIG_ROCK_SPIN = 1
@@ -37,13 +49,95 @@ SMALL_ROCK_SPIN = 5
 SMALL_ROCK_RADIUS = 2
 
  
-#import Object_Foundation
-#from Object_Foundation import *
-#from Asteroid_Obj import Rock_Lrg
+class Ship(Object_Foundation.Object):
+    """
+    The ship is a rectangle that tracks the mouse.
+    """
+    def __init__(self, val):
+        super().__init__()
+        #self.sprite = arcade.load_texture("Ship.png")
+        #self.x = 300
+        #self.center_y = 200
+        self.dx = self.velocity.dx
+        self.dy = self.velocity.dy
 
-#import Ship_Obj
-#import Projectile_Obj
+    def create(self):
+        self.center.x = 300
+        self.center.y = 200
+        self.velocity.dy = 0.0
+        self.velocity.dx = 0.0
+        self.alive = True
+        
+        self.dx = self.velocity.dx
+        
+        self.dy = self.velocity.dy
+        
+        self.angle = 90
 
+    @property
+    def move_up(self):
+        return self._dy
+    
+    
+    def move_up(self, val):
+        #val += SHIP_THRUST_AMOUNT
+
+        if val < 0.0:
+            self._dy = 0.0
+            
+        elif val > 3.0:
+            self._dy = 3.0
+        else:
+            self._dy = val
+        
+    @property
+    def move_down(self):
+        return self.dy
+    @move_down.setter
+    def move_down(self, val):
+        if val < -5:
+            self.dy = 0.0
+            
+        elif val > 3.0:
+            self.dy = 3.0
+        else:
+            self.dy = val       
+    
+    @property
+    def move_left(self):
+        return self.dx
+    @move_left.setter
+    def move_left(self, val):
+        if val < -5:
+            self.dy = 0.0
+            
+        elif val > 3.0:
+            self.dy = 3.0
+        else:
+            self.dy = val
+
+    @property
+    def move_right(self):
+        return self.dx
+    @move_right.setter
+    def move_right(self, val):
+        if val < -5:
+            self.dy = 0.0
+            
+        elif val > 3.0:
+            self.dy = 3.0
+        else:
+            self.dy = val
+
+
+    def draw(self):
+
+        self.sprite = arcade.load_texture("ship.png")
+        
+        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, 360 - self.angle)
+
+    def death_event(self):
+        self.alive = False
 
 class Game(arcade.Window):
     """
@@ -66,11 +160,10 @@ class Game(arcade.Window):
         
         self.held_keys = set()
 
-        #self.ship = Ship_Obj.Ship()
-        self.ship = []
+        self.ship = Ship_Obj.Ship(0.25)
+
         self.rocks = []
         self.create_asteroids()
-        self.create_ship()
 
         # Track the current state of what key is pressed
         self.left_pressed = False
@@ -94,8 +187,7 @@ class Game(arcade.Window):
         for rock in self.rocks:
             rock.draw()
 
-        for player in self.ship:
-            player.draw()
+        self.ship.draw()
 
         # TODO: draw each object
 
@@ -107,8 +199,7 @@ class Game(arcade.Window):
 
         self.check_keys()
 
-        for player in self.ship:
-            player.advance()
+        self.ship.advance()
 
         for rock in self.rocks:
             rock.advance()
@@ -117,12 +208,6 @@ class Game(arcade.Window):
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
-    def create_ship(self):
-        player = Ship_Obj.Ship()
-
-        player.create()
-
-        self.ship.append(player)
 
     def create_asteroids(self):
         #import Asteroid_Obj
@@ -145,17 +230,16 @@ class Game(arcade.Window):
         """
         
         if arcade.key.LEFT in self.held_keys:
-            self.ship.dx
+            self.ship.move_left
             
         if arcade.key.RIGHT in self.held_keys:
-            self.ship.dx
+            self.ship.move_right
             
         if arcade.key.UP in self.held_keys:
             self.ship.dy
             
         if arcade.key.DOWN in self.held_keys:
-            for down in self.ship:
-                down.dy - 1
+            self.ship.move_down
             
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
@@ -169,7 +253,7 @@ class Game(arcade.Window):
         """
         if self.ship:
             self.held_keys.add(key)
-            
+
             if key == arcade.key.SPACE:
                 # TODO: Fire the bullet here!
                 pass
