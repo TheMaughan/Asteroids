@@ -21,8 +21,10 @@ class Velocity: #- Object progression
     @dy.setter
     def dy(self, dy):
         if dy < 0.0:
+            self._dy = 0.0
+        elif dy < -0.25:
             self._dy += -0.25
-        elif dy > 0.0:
+        elif dy > 0.25:
             self._dy += 0.25
         else:
             self._dy = dy
@@ -33,8 +35,10 @@ class Velocity: #- Object progression
     @dx.setter
     def dx(self, dx):
         if dx < 0.0:
+            self._dx = 0.0
+        elif dx < -0.25:
             self._dx += -0.25
-        elif dx > 0.0:
+        elif dx > 0.25:
             self._dx += 0.25
         else:
             self._dx = dx

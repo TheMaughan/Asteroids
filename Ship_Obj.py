@@ -46,10 +46,10 @@ class Ship(Object_Foundation.Object):
         arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, self.angle)
 
     def move_forward(self):
-        self.velocity.dy += 1
+        self.velocity.dy += 0.25
 
     def move_backwards(self):
-        self.velocity.dy += -1
+        self.velocity.dy += -0.25
 
     def death_event(self):
         self.alive = False
