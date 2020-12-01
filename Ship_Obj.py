@@ -1,7 +1,6 @@
 import arcade, math, random, arcade
 from abc import abstractmethod
 from abc import ABC
-
 from arcade import texture
 import Object_Foundation #- Main Parent Module
 
@@ -27,81 +26,79 @@ class Ship(Object_Foundation.Object):
     """
     def __init__(self):
         super().__init__()
-        self.speed = 0
-        self.thrust = 0
-        self.drag = 0.01
-
     def create(self):
-        self.wrap()
+        self.advance()
         self.center.x = 300
         self.center.y = 200
-        self.velocity.dx = 0.0
-        self.velocity.dy = 0.0
-        self.alive = True        
-        self.angle = 90
-
-    def wrap(self): #- Set dementions for the target to draw at a location:
-        if self.center.y < 0:
-            self.center.y = SCREEN_HEIGHT
-        elif self.center.y > SCREEN_HEIGHT:
-            self.center.y = 0
-        elif self.center.x < 0:
-            self.center.x = SCREEN_WIDTH
-        elif self.center.x > SCREEN_HEIGHT:
-            self.center.x = 0
-
+        self.alive = True
+    def advance(self):
+        self.angle = math.degrees(math.atan2(self.velocity.dy, self.velocity.dx))
+        self.speed = 0
+        self.reverse = 0
+        self.forward = 0
+        self.dy = self.velocity.dy
+        self.dx = self.velocity.dx
+        self.dx = -math.sin(math.radians(self.angle)) * self.center.x
+        self.dy = math.cos(math.radians(self.angle)) * self.center.y
+    """
+    #- This sets the accelaration of an object to 0.25 per iteration:
+    @property
+    def dy(self):
+        return self._dy
+    @dy.setter
+    def dy(self, dy):
+        if dy == 0.0:
+            self._dy = 0.0
+        elif dy > 0.25:
+            self._dy += 0.25
+        elif dy < -0.25:
+            self._dy += -0.25
+        else:
+            self._dy = dy
+    """
     def draw(self):
-
         self.sprite = arcade.load_texture("ship.png")
-        
         arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, self.angle)
 
         if self.center.y < 0:
             self.center.y = SCREEN_HEIGHT
-
         if self.center.y > SCREEN_HEIGHT:
             self.center.y = 0
-
         if self.center.x < 0:
             self.center.x = SCREEN_WIDTH
-            
         if self.center.x > SCREEN_WIDTH:
             self.center.x = 0
 
     def move_forward(self):
-        if self.speed > 0:
-            self.speed -= self.drag
-            if self.speed < 0:
-                self.speed = 0
-        if self.speed < 0:
-            self.speed += self.drag
-            if self.speed > 0:
-                self.speed = 0
-        
-        self.speed += self.thrust
+        self.velocity.dy += 0.25
 
+    def move_backwards(self):
+        self.velocity.dy -= 0.25
 
-    def advance(self):
+    def rotate_right(self):
+        self.velocity.dy += 0.25
 
-        self.velocity.dx = -math.sin(math.radians(self.angle)) * self.speed
-        self.velocity.dy = math.cos(math.radians(self.angle)) * self.speed
-
+    def rotate_left(self):
+        self.velocity.dy -= 0.25
 
     def death_event(self):
         self.alive = False
 
     def display(self):
-        print("Moved: {}".format(self.velocity.dy))
+        print("Moved: {}".format(self.dy))
 
-"""
+
 def main():
     thrust = Ship()
-    thrust.velocity.dy = 1
-    thrust.velocity.dy = 1
+    thrust.dy = 1
+    thrust.dy = 1
     thrust.display()
-    thrust.velocity.dy = -1
+    thrust.dy = -1
+    thrust.display()
+    thrust.dy = -2
+    thrust.display()
+    thrust.dy = 39
     thrust.display()
 
 if __name__ == "__main__":
     main()
-"""

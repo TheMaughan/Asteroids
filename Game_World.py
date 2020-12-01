@@ -71,13 +71,7 @@ class Game(arcade.Window):
         self.rocks = []
         self.create_asteroids()
         #self.create_ship()
-
-        # Track the current state of what key is pressed
-        self.left_pressed = False
-        self.right_pressed = False
-        self.up_pressed = False
-        self.down_pressed = False
-
+        
         # TODO: declare anything here you need the game class to track
 
     def on_draw(self):
@@ -145,10 +139,10 @@ class Game(arcade.Window):
         """
         
         if arcade.key.LEFT in self.held_keys:
-            self.ship.velocity.dx -= 1
+            self.ship.velocity.dx = 3
             
         if arcade.key.RIGHT in self.held_keys:
-            self.ship.velocity.dx += 1
+            self.ship.velocity.dx = -3
             
         if arcade.key.UP in self.held_keys:
             self.ship.move_forward()
