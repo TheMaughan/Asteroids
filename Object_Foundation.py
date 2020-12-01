@@ -1,4 +1,3 @@
-from Asteroid_Obj import SCREEN_HEIGHT, SCREEN_WIDTH
 import arcade
 from abc import abstractmethod
 from abc import ABC
@@ -14,16 +13,9 @@ class Object(ABC): #- All travling objects share these same atrabutes:
         self.create()
 
     @abstractmethod
-    def create(self): #- Set dementions for the target to draw at a location:
-        if self.center.y < 0:
-            self.center.y = SCREEN_HEIGHT
-        elif self.center.y > SCREEN_HEIGHT:
-            self.center.y = 0
-        elif self.center.x < 0:
-            self.center.x = SCREEN_WIDTH
-        elif self.center.x > SCREEN_HEIGHT:
-            self.center.x = 0
-
+    def create(self):
+        pass
+   
 
     @abstractmethod
     def draw(self): #- Establish the physical properties:

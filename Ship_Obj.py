@@ -32,6 +32,7 @@ class Ship(Object_Foundation.Object):
         self.drag = 0.01
 
     def create(self):
+        self.wrap()
         self.center.x = 300
         self.center.y = 200
         self.velocity.dx = 0.0
@@ -39,11 +40,33 @@ class Ship(Object_Foundation.Object):
         self.alive = True        
         self.angle = 90
 
+    def wrap(self): #- Set dementions for the target to draw at a location:
+        if self.center.y < 0:
+            self.center.y = SCREEN_HEIGHT
+        elif self.center.y > SCREEN_HEIGHT:
+            self.center.y = 0
+        elif self.center.x < 0:
+            self.center.x = SCREEN_WIDTH
+        elif self.center.x > SCREEN_HEIGHT:
+            self.center.x = 0
+
     def draw(self):
 
         self.sprite = arcade.load_texture("ship.png")
         
         arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, self.angle)
+
+        if self.center.y < 0:
+            self.center.y = SCREEN_HEIGHT
+
+        if self.center.y > SCREEN_HEIGHT:
+            self.center.y = 0
+
+        if self.center.x < 0:
+            self.center.x = SCREEN_WIDTH
+            
+        if self.center.x > SCREEN_WIDTH:
+            self.center.x = 0
 
     def move_forward(self):
         if self.speed > 0:

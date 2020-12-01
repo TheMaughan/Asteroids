@@ -1,3 +1,4 @@
+from os import terminal_size
 import arcade, math, random
 from abc import abstractmethod
 from abc import ABC
@@ -60,6 +61,17 @@ class Rock_Lrg(A_Foundation):
         # rotate the object during game play, we will specify an additional rotation parameter.
         arcade.draw_texture_rectangle(self.center.x, self.center.y, texture.width, texture.height, texture)
         
+        if self.center.y < 0:
+            self.center.y = SCREEN_HEIGHT
+
+        if self.center.y > SCREEN_HEIGHT:
+            self.center.y = 0
+
+        if self.center.x < 0:
+            self.center.x = SCREEN_WIDTH
+            
+        if self.center.x > SCREEN_WIDTH:
+            self.center.x = 0
 
     #- Kill target on collision event:
     def hit(self):
@@ -84,8 +96,13 @@ class Rock_Lrg(A_Foundation):
         self.alive = True
         self.center.x = 400
         self.center.y = 300
-        self.velocity.dx = 1.5 #- Manipulate speed of rock here
+        self.velocity.dx = -1.5 #- Manipulate speed of rock here
         self.velocity.dy = 1.5
+
+        
+
+    
+        
 
 
 """
