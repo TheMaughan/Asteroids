@@ -27,9 +27,9 @@ class Ship(Object_Foundation.Object):
     """
     def __init__(self):
         super().__init__()
-        #self.sprite = arcade.load_texture("Ship.png")
-        #self.x = 300
-        #self.center_y = 200
+        self.speed = 0
+        self.thrust = 0
+        self.drag = 0.01
 
     def create(self):
         self.center.x = 300
@@ -46,10 +46,23 @@ class Ship(Object_Foundation.Object):
         arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, self.angle)
 
     def move_forward(self):
-        self.velocity.dy += 0.25
+        if self.speed > 0:
+            self.speed -= self.drag
+            if self.speed < 0:
+                self.speed = 0
+        if self.speed < 0:
+            self.speed += self.drag
+            if self.speed > 0:
+                self.speed = 0
+        
+        self.speed += self.thrust
 
-    def move_backwards(self):
-        self.velocity.dy += -0.25
+
+    def advance(self):
+
+        self.velocity.dx = -math.sin(math.radians(self.angle)) * self.speed
+        self.velocity.dy = math.cos(math.radians(self.angle)) * self.speed
+
 
     def death_event(self):
         self.alive = False
