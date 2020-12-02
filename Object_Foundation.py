@@ -10,6 +10,7 @@ class Object(ABC): #- All travling objects share these same atrabutes:
     def __init__(self):
         self.center = Point_Velocity.Point()
         self.velocity = Point_Velocity.Velocity()
+        self.max = self.velocity.max
         self.create()
 
     @abstractmethod

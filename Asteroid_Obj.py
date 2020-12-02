@@ -46,6 +46,7 @@ class A_Foundation(Object_Foundation.Object, ABC): #- Sets the design for the As
 class Rock_Lrg(A_Foundation):
     def __init__(self):
         super().__init__()
+        self.max = 2
 
     #- Set dementions for the target to draw:
     def draw(self):

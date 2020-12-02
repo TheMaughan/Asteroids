@@ -1,13 +1,14 @@
-import arcade, math, random, arcade
+import arcade, math, arcade
 from abc import abstractmethod
 from abc import ABC
-from arcade import texture
 import Object_Foundation #- Main Parent Module
 import Point_Velocity
 
 SHIP_TURN_AMOUNT = 3
 SHIP_THRUST_AMOUNT = 0.25
 SHIP_RADIUS = 30
+
+SCALE = 0.5
 
 # Speed limit
 MAX_SPEED = 30
@@ -28,38 +29,25 @@ class Ship(Object_Foundation.Object):
     def __init__(self):
         super().__init__()
         #self.center = Point_Velocity.Point(MAX_SPEED)
-        self.velocity = Point_Velocity.Velocity(MAX_SPEED)
+        self.max = 10
+        self.velocity = Point_Velocity.Velocity()
     def create(self):
-        self.advance()
+        self.alive = True
+        self.speed = 0
+        self.angle = math.degrees(math.atan2(self.center.y, self.center.x))
         self.center.x = 300
         self.center.y = 200
-        self.alive = True
+        self.velocity.dx = -math.sin(math.radians(self.angle)) * self.speed
+        self.velocity.dy = math.cos(math.radians(self.angle)) * self.speed
+
     def advance(self):
-        self.angle = math.degrees
-        self.speed = 0 
-        self.reverse = 0
-        self.forward = 0
-        self.dx = -math.sin(math.radians(self.angle)) * self.speed
-        self.dy = math.cos(math.radians(self.angle)) * self.speed
-    """
-    #- This sets the accelaration of an object to 0.25 per iteration:
-    @property
-    def dy(self):
-        return self._dy
-    @dy.setter
-    def dy(self, dy):
-        if dy == 0.0:
-            self._dy = 0.0
-        elif dy > 0.25:
-            self._dy += 0.25
-        elif dy < -0.25:
-            self._dy += -0.25
-        else:
-            self._dy = dy
-    """
+        #(math.radians(self.angle))
+        self.center.x += -self.speed * math.sin((math.radians(self.angle)))
+        self.center.y += self.speed * math.cos((math.radians(self.angle)))
+   
     def draw(self):
         self.sprite = arcade.load_texture("ship.png")
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite - 0.5, self.angle)
+        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width / 2, self.sprite.height / 2, self.sprite, self.angle)
 
         if self.center.y < 0:
             self.center.y = SCREEN_HEIGHT
@@ -77,29 +65,10 @@ class Ship(Object_Foundation.Object):
         self.speed -= 0.25
 
     def rotate_right(self):
-        self.angle += 30
+        self.angle -= 3
 
     def rotate_left(self):
-        self.angle -= 30
+        self.angle += 3
 
     def death_event(self):
         self.alive = False
-
-    def display(self):
-        print("Moved: {}".format(self.dy))
-
-
-def main():
-    thrust = Ship()
-    thrust.dy = 1
-    thrust.dy = 1
-    thrust.display()
-    thrust.dy = -1
-    thrust.display()
-    thrust.dy = -2
-    thrust.display()
-    thrust.dy = 39
-    thrust.display()
-
-if __name__ == "__main__":
-    main()
