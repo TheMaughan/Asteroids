@@ -3,16 +3,17 @@ from abc import abstractmethod
 from abc import ABC
 from arcade import texture
 import Object_Foundation #- Main Parent Module
+import Point_Velocity
 
 SHIP_TURN_AMOUNT = 3
 SHIP_THRUST_AMOUNT = 0.25
 SHIP_RADIUS = 30
 
 # Speed limit
-MAX_SPEED = 3.0
+MAX_SPEED = 30
 
 # How fast we accelerate
-ACCELERATION_RATE = 0.1
+ACCELERATION_RATE = 0.01
 
 # How fast to slow down after we letr off the key
 FRICTION = 0.02
@@ -26,20 +27,20 @@ class Ship(Object_Foundation.Object):
     """
     def __init__(self):
         super().__init__()
+        #self.center = Point_Velocity.Point(MAX_SPEED)
+        self.velocity = Point_Velocity.Velocity(MAX_SPEED)
     def create(self):
         self.advance()
         self.center.x = 300
         self.center.y = 200
         self.alive = True
     def advance(self):
-        self.angle = math.degrees(math.atan2(self.velocity.dy, self.velocity.dx))
-        self.speed = 0
+        self.angle = math.degrees
+        self.speed = 0 
         self.reverse = 0
         self.forward = 0
-        self.dy = self.velocity.dy
-        self.dx = self.velocity.dx
-        self.dx = -math.sin(math.radians(self.angle)) * self.center.x
-        self.dy = math.cos(math.radians(self.angle)) * self.center.y
+        self.dx = -math.sin(math.radians(self.angle)) * self.speed
+        self.dy = math.cos(math.radians(self.angle)) * self.speed
     """
     #- This sets the accelaration of an object to 0.25 per iteration:
     @property
@@ -58,7 +59,7 @@ class Ship(Object_Foundation.Object):
     """
     def draw(self):
         self.sprite = arcade.load_texture("ship.png")
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite, self.angle)
+        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width, self.sprite.height, self.sprite - 0.5, self.angle)
 
         if self.center.y < 0:
             self.center.y = SCREEN_HEIGHT
@@ -70,16 +71,16 @@ class Ship(Object_Foundation.Object):
             self.center.x = 0
 
     def move_forward(self):
-        self.velocity.dy += 0.25
+        self.speed += 0.25
 
     def move_backwards(self):
-        self.velocity.dy -= 0.25
+        self.speed -= 0.25
 
     def rotate_right(self):
-        self.velocity.dy += 0.25
+        self.angle += 30
 
     def rotate_left(self):
-        self.velocity.dy -= 0.25
+        self.angle -= 30
 
     def death_event(self):
         self.alive = False

@@ -2,7 +2,7 @@ import arcade, math
 from abc import abstractmethod
 from abc import ABC
 
-SHIP_THRUST_AMOUNT = 0.25
+INPUT_DATA = 0.0
 
 class Point: #- Object Location
     def __init__(self):
@@ -13,7 +13,7 @@ class Velocity: #- Object progression
     def __init__(self):
         self.dx = 0.0
         self.dy = 0.0
-    """
+    
     #- This sets the accelaration of an object to 0.25 per iteration:
     @property
     def dy(self):
@@ -42,7 +42,7 @@ class Velocity: #- Object progression
             self._dx += 0.25
         else:
             self._dx = dx
-    """
+    
     """
     def display(self):
         print("move: {}".format(self.dy))
