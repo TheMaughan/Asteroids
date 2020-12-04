@@ -37,16 +37,16 @@ class Ship(Object_Foundation.Object):
         self.angle = math.degrees(math.atan2(self.center.y, self.center.x))
         self.center.x = 300
         self.center.y = 200
-        self.velocity.dx = -math.sin(self.angle) * self.speed
-        self.velocity.dy = math.cos(self.angle) * self.speed
+        self.velocity.dx = -math.sin(math.radians(self.angle)) * self.speed
+        self.velocity.dy = math.cos(math.radians(self.angle)) * self.speed
         
         #self.change_x += -math.sin(self.radians) * speed
         #self.change_y += math.cos(self.radians) * speed
 
-    def advance(self):
+    def move(self):
         #(math.radians(self.angle)) * math.sin((math.radians(self.angle)))
-        self.center.x += -self.speed
-        self.center.y += self.speed
+        self.center.x = -math.sin(math.radians(self.angle)) * self.speed
+        self.center.y = math.cos(math.radians(self.angle)) * self.speed
     """
     def rotate_point(x: float, y: float, cx: float, cy: float,
                  angle_degrees: float) -> List[float]:

@@ -146,9 +146,11 @@ class Game(arcade.Window):
             
         if arcade.key.UP in self.held_keys:
             self.ship.speed += 0.25
+            self.ship.move()
             
         if arcade.key.DOWN in self.held_keys:
             self.ship.speed += -0.25
+            self.ship.move()
             
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
