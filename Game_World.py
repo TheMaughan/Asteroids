@@ -100,6 +100,7 @@ class Game(arcade.Window):
 
         self.check_keys()
         self.ship.advance()
+        self.ship.move()
         
 
         for rock in self.rocks:
@@ -147,11 +148,11 @@ class Game(arcade.Window):
             
         if arcade.key.UP in self.held_keys:
             self.ship.speed += 0.25
-            self.ship.move()
+            #self.ship.move()
             
         if arcade.key.DOWN in self.held_keys:
             self.ship.speed += -0.25
-            self.ship.move()
+            #self.ship.move()
             
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
