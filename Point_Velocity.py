@@ -1,6 +1,3 @@
-import arcade, math
-from abc import abstractmethod
-from abc import ABC
 
 INPUT_DATA = 0.0
 MAX_SPEED = 10

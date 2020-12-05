@@ -100,6 +100,7 @@ class Game(arcade.Window):
 
         self.check_keys()
         self.ship.advance()
+        
 
         for rock in self.rocks:
             rock.advance()
@@ -164,6 +165,7 @@ class Game(arcade.Window):
         """
         if self.ship:
             self.held_keys.add(key)
+            #self.ship.move()
             
             if key == arcade.key.SPACE:
                 # TODO: Fire the bullet here!

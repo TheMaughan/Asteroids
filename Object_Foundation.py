@@ -1,4 +1,3 @@
-import arcade
 from abc import abstractmethod
 from abc import ABC
 import Point_Velocity
