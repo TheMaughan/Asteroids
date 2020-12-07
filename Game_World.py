@@ -66,11 +66,10 @@ class Game(arcade.Window):
         
         self.held_keys = set()
 
-        #self.ship = []
         self.ship = Ship_Obj.Ship()
         self.rocks = []
-        self.create_asteroids()
-        #self.create_ship()
+        for i in range(5):
+            self.create_asteroids()
         
         # TODO: declare anything here you need the game class to track
 
@@ -82,8 +81,6 @@ class Game(arcade.Window):
         
         # clear the screen to begin drawing
         arcade.start_render()
-
-        #self.rock.draw()
 
         for rock in self.rocks:
             rock.draw()
@@ -101,31 +98,21 @@ class Game(arcade.Window):
         self.check_keys()
         self.ship.advance()
         self.ship.move()
-        
 
         for rock in self.rocks:
             rock.advance()
+            rock.rotate()
 
 
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
-        
-    """
-    def create_ship(self):
-        player = Ship_Obj.Ship()
-
-        player.create()
-
-        self.ship.append(player)
-    """
 
     def create_asteroids(self):
-        #import Asteroid_Obj
         lrg = Asteroid_Obj.Rock_Lrg()
         #med = Asteroid_Obj.Rock_Med()
         #sml = Asteroid_Obj.Rock_Sml()
-
+        
         lrg.create()
         #med.Asteroid_Obj.create
         #sml.Asteroid_Obj.create
