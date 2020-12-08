@@ -75,21 +75,8 @@ class Rock_Lrg(A_Foundation):
 
     #- Kill target on collision event:
     def hit(self):
-        score = 0
+        self.alive = False
 
-        arcade.draw_circle_filled(self.center.x, self.center.y, self.radius, arcade.color.RED)
-
-        self.radius -= 10
-
-        if self.radius == 20:
-            score += 1
-        elif self.radius == 10:
-            score += 1
-        elif self.radius <= 0:
-            score += 5
-            self.alive = False
-
-        return score
         
     #- Set dementions for the target to draw at a location:
     def create(self):
@@ -104,6 +91,7 @@ class Rock_Lrg(A_Foundation):
         self.center.y = random.randint(0, SCREEN_HEIGHT)
         self.velocity.dx = math.cos(math.radians(self.angle)) * 1.5
         self.velocity.dy = math.sin(math.radians(self.angle)) * 1.5
+        self.radius = BIG_ROCK_RADIUS
         
         
 

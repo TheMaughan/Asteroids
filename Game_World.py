@@ -100,6 +100,7 @@ class Game(arcade.Window):
         self.check_keys()
         self.ship.advance()
         self.cleanup_zombies()
+        self.check_collisions()
         #self.ship.move()
 
         for rock in self.rocks:
@@ -115,24 +116,51 @@ class Game(arcade.Window):
 
         # TODO: Check for collisions
 
-    def cleanup_zombies(self):
-        for bullet in self.bullets:
-            if not bullet.alive:
-                self.bullets.remove(bullet)
-
-
     def create_asteroids(self):
         lrg = Asteroid_Obj.Rock_Lrg()
         #med = Asteroid_Obj.Rock_Med()
         #sml = Asteroid_Obj.Rock_Sml()
         
         lrg.create()
-        #med.Asteroid_Obj.create
-        #sml.Asteroid_Obj.create
+        #med.create()
+        #sml.create()
 
         self.rocks.append(lrg)
-        #self.asteroids.append(med)
-        #self.asteroids.append(sml)
+        #self.rocks.append(med)
+        #self.rocks.append(sml)
+
+    def check_collisions(self):
+        """
+        Checks to see if bullets have hit rocks.
+        Updates scores and removes dead items.
+        :return:
+        """
+        for bullet in self.bullets:
+            for rock in self.rocks:
+
+                # Make sure they are both alive before checking for a collision
+                if bullet.alive and rock.alive:
+                    too_close = bullet.radius + rock.radius
+
+                    if (abs(bullet.center.x - rock.center.x) < too_close and
+                                abs(bullet.center.y - rock.center.y) < too_close):
+                        # its a hit!
+                        bullet.alive = False
+                        rock.hit()
+                        # We will wait to remove the dead objects until after we
+                        # finish going through the list
+
+        # Now, check for anything that is dead, and remove it
+        self.cleanup_zombies()
+
+    def cleanup_zombies(self):
+        for bullet in self.bullets:
+            if not bullet.alive:
+                self.bullets.remove(bullet)
+
+        for rock in self.rocks:
+            if not rock.alive:
+                self.rocks.remove(rock)
 
     def check_keys(self):
         """
