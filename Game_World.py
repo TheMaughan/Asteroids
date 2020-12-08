@@ -108,7 +108,7 @@ class Game(arcade.Window):
 
         for bullet in self.bullets:
             bullet.advance()
-            bullet.update_bullet()
+            bullet.set_life()
 
 
         # TODO: Tell everything to advance or move forward one step in time
@@ -168,7 +168,7 @@ class Game(arcade.Window):
             
             if key == arcade.key.SPACE:
                 bullet = Projectile_Obj.Bullet()
-                bullet.fire()
+                bullet.fire(self.ship.center.x, self.ship.center.y, self.ship.angle)
                 self.bullets.append(bullet)
                 # TODO: Fire the bullet here!
                 
