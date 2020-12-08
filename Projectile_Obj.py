@@ -18,9 +18,25 @@ class Bullet(Object_Foundation.Object):
         #- Call the ceation of the bullet:
         self.create()
 
+    #- Create the Bullet in the Rifle
+    def create(self): #- Set the perameters for the bullet
+        self.ship = Ship_Obj.Ship()
+        self.center.x = self.ship.center.x
+        self.center.y = self.ship.center.y
+        self.angle = self.ship.angle
+        self.velocity.dx = \
+            (math.cos(math.radians(self.angle + 90)) * self.ship.speed)
+        self.velocity.dy = \
+            (math.sin(math.radians(self.angle + 90)) * self.ship.speed)
+        self.speed = self.ship.speed + BULLET_SPEED
+        self.radius = BULLET_RADIUS
+        self.life = 0.0
+        self.alive = True
+
     def draw(self): #- Draw Ball with radius of 10 px:
+        self.create()
         self.sprite = arcade.load_texture("laser.png")
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width / 2, self.sprite.height / 2, self.sprite, self.angle)
+        arcade.draw_texture_rectangle(self.ship.center.x, self.ship.center.y, self.sprite.width / 2, self.sprite.height / 2, self.sprite, self.ship.angle)
         
         if self.center.y < 0:
             self.center.y = SCREEN_HEIGHT
@@ -35,27 +51,10 @@ class Bullet(Object_Foundation.Object):
     def fire(self):
         self.create()
         self.alive = True
-        self.velocity.dx = math.cos(self.angle) * BULLET_SPEED
-        self.velocity.dy = math.sin(self.angle) * BULLET_SPEED
         
         #self.angle = math.degrees(math.atan2(self.velocity.dy, self.velocity.dx))
-    
-    #- Create the Bullet in the Rifle
-    def create(self): #- Set the perameters for the bullet
-        self.ship = Ship_Obj.Ship()
-        self.center.x = self.ship.center.x
-        self.center.y = self.ship.center.y
-        self.angle = math.atan2(self.velocity.dy, self.velocity.dx)
-        self.speed = BULLET_SPEED
-        self.radius = BULLET_RADIUS
-        self.life = 0.0
-        self.alive = True
 
-    def update_bullet(self):
-        self.center.x = self.ship.center.x
-        self.center.y = self.ship.center.y
-        self.angle = math.atan2(self.velocity.dy, self.velocity.dx)
-        
+    def update_bullet(self):        
         for i in range(BULLET_LIFE):
             self.life += 1
 

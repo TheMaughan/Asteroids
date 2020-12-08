@@ -26,9 +26,10 @@ class Ship(Object_Foundation.Object):
     """
     def __init__(self):
         super().__init__()
-        #self.center = Point_Velocity.Point(MAX_SPEED)
+        
         self.max = 10
-        self.velocity = Point_Velocity.Velocity()
+        self.drag = 1
+        
     def create(self):
         self.alive = True
         self.speed = 0
@@ -58,10 +59,11 @@ class Ship(Object_Foundation.Object):
         self.velocity.dy = (math.sin(math.radians(self.angle + 90)) * self.speed)
 
     def move_backwards(self):
-        if self.speed > 0:
-            self.speed -= SHIP_THRUST_AMOUNT
-            self.velocity.dx = (math.cos(math.radians(self.angle + 90)) * -self.speed)
-            self.velocity.dy = (math.sin(math.radians(self.angle + 90)) * -self.speed)
+        self.speed -= SHIP_THRUST_AMOUNT
+        self.center.x -= self.velocity.dx
+        self.center.y -= self.velocity.dy
+        self.velocity.dx = (math.cos(math.radians(self.angle - 90)) * -self.speed)
+        self.velocity.dy = (math.sin(math.radians(self.angle - 90)) * -self.speed)
 
     def rotate_right(self):
         self.angle -= SHIP_TURN_AMOUNT
@@ -71,3 +73,15 @@ class Ship(Object_Foundation.Object):
     
     def death_event(self):
         self.alive = False
+
+    @property
+    def speed(self):
+        return self._speed
+    @speed.setter
+    def speed(self, speed):
+        if speed < 0:
+            self._speed = 0
+        elif speed > self.max:
+            self._speed = self.max
+        else:
+            self._speed = speed
