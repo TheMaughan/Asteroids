@@ -10,7 +10,7 @@ from abc import abstractmethod
 from abc import ABC
 import Asteroid_Obj
 import Ship_Obj
-from Ship_Obj import Ship
+import Projectile_Obj
 
 # These are Global constants to use throughout the game
 SCREEN_WIDTH = 800
@@ -65,7 +65,8 @@ class Game(arcade.Window):
         arcade.set_background_color(arcade.color.SMOKY_BLACK)
         
         self.held_keys = set()
-
+        
+        self.bullets = []
         self.ship = Ship_Obj.Ship()
         self.rocks = []
         for i in range(5):
@@ -84,6 +85,9 @@ class Game(arcade.Window):
 
         for rock in self.rocks:
             rock.draw()
+        
+        for bullet in self.bullets:
+            bullet.draw()
 
         self.ship.draw()
 
@@ -102,6 +106,9 @@ class Game(arcade.Window):
         for rock in self.rocks:
             rock.advance()
             rock.rotate()
+
+        for bullet in self.bullets:
+            bullet.advance()
 
 
         # TODO: Tell everything to advance or move forward one step in time
@@ -156,8 +163,11 @@ class Game(arcade.Window):
             #self.ship.move()
             
             if key == arcade.key.SPACE:
+                bullet = Projectile_Obj.Bullet()
+                bullet.fire()
+                self.bullets.append(bullet)
                 # TODO: Fire the bullet here!
-                pass
+                
 
     def on_key_release(self, key: int, modifiers: int):
         """
