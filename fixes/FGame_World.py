@@ -5,7 +5,9 @@ Co-Author: Bryce Maughan
 
 This program implements a version of the asteroids game.
 """
-import arcade
+import arcade, math, random
+from abc import abstractmethod
+from abc import ABC
 import Asteroid_Obj
 import Ship_Obj
 import Projectile_Obj
@@ -99,7 +101,6 @@ class Game(arcade.Window):
 
         self.check_keys()
         self.ship.advance()
-        self.cleanup_zombies()
         #self.ship.move()
 
         for rock in self.rocks:
@@ -108,18 +109,11 @@ class Game(arcade.Window):
 
         for bullet in self.bullets:
             bullet.advance()
-            bullet.update_bullet()
 
 
         # TODO: Tell everything to advance or move forward one step in time
 
         # TODO: Check for collisions
-
-    def cleanup_zombies(self):
-        for bullet in self.bullets:
-            if not bullet.alive:
-                self.bullets.remove(bullet)
-
 
     def create_asteroids(self):
         lrg = Asteroid_Obj.Rock_Lrg()
