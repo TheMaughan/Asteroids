@@ -24,8 +24,8 @@ class Bullet(Object_Foundation.Object):
     def fire(self):
         self.create()
         self.alive = True
-        self.velocity.dx = self.ship.velocity.dx
-        self.velocity.dy = self.ship.velocity.dy
+        self.velocity.dx = math.cos(self.angle) * BULLET_SPEED
+        self.velocity.dy = math.sin(self.angle) * BULLET_SPEED
         #self.angle = math.degrees(math.atan2(self.velocity.dy, self.velocity.dx))
     
     #- Create the Bullet in the Rifle
@@ -33,7 +33,14 @@ class Bullet(Object_Foundation.Object):
         self.ship = Ship_Obj.Ship()
         self.center.x = self.ship.center.x
         self.center.y = self.ship.center.y
-        self.angle = math.atan2(self.velocity.y, self.velocity.x)
+        self.angle = math.atan2(self.velocity.dy, self.velocity.dx)
         self.speed = BULLET_SPEED
         self.radius = BULLET_RADIUS
         self.alive = True
+
+    def update(self):
+        self.center.x = self.ship.center.x
+        self.center.y = self.ship.center.y
+
+        self.angle = math.atan2(self.velocity.dy, self.velocity.dx)
+
