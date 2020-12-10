@@ -65,6 +65,9 @@ class Rock_Lrg(A_Foundation):
 
     #- Kill target on collision event:
     def hit(self):
+        med_1 = Rock_Med()
+        med_2 = Rock_Med()
+        sml = Rock_Sml()
         self.alive = False
 
         

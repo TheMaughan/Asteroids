@@ -68,7 +68,7 @@ class Game(arcade.Window):
         self.ship = Ship_Obj.Ship()
         self.rocks = []
         for i in range(5):
-            self.create_large()
+            self.create_rocks()
         
         # TODO: declare anything here you need the game class to track
 
@@ -116,21 +116,18 @@ class Game(arcade.Window):
 
         # TODO: Check for collisions
 
-    def create_large(self):
-        lrg = Asteroid_Obj.Rock_Lrg()     
-        lrg.create()
-        self.rocks.append(lrg)
-        
-    def create_medium(self):
+    def create_rocks(self):
+        lrg = Asteroid_Obj.Rock_Lrg()
         med = Asteroid_Obj.Rock_Med()
-        med.create()
-        self.rocks.append(med)
-        
-    def create_small(self):
         sml = Asteroid_Obj.Rock_Sml()
-        sml.create()
-        self.rocks.append(sml)
 
+        lrg.create()
+        med.create()
+        sml.create()
+
+        self.rocks.append(lrg)
+        self.rocks.append(med)
+        self.rocks.append(sml)
 
     def check_collisions(self):
         """
@@ -151,9 +148,7 @@ class Game(arcade.Window):
                         bullet.alive = False
                         rock.hit()
                         if rock.radius == BIG_ROCK_RADIUS:
-                            self.create_medium(self.create_large.center.x, self.create_large.center.y)
-                            self.create_medium()
-                            self.create_small()
+                            rock.hit(rock.center.x, rock.center.y)
                         # We will wait to remove the dead objects until after we
                         # finish going through the list
 
