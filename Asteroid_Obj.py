@@ -82,7 +82,6 @@ class Rock_Med(A_Foundation):
     #- Kills target on collision event:
     def hit(self):
         self.alive = False
-        self.rotate()
         return [Rock_Sml(self.center.x, self.center.y), Rock_Sml(self.center.x, self.center.y)]
     
     #- Set dementions for the target to draw at a location.
@@ -92,7 +91,7 @@ class Rock_Med(A_Foundation):
         self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.angle = math.degrees(random.randrange(360))
         self.change_angle = random.randint(-2, 2)
-        #self.rotate()
+        self.rotate()
         self.alive = True
         self.velocity.dx = math.cos(math.radians(self.angle)) * 2
         self.velocity.dy = math.sin(math.radians(self.angle)) * 2
@@ -121,7 +120,7 @@ class Rock_Sml(A_Foundation):
         self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.angle = math.degrees(random.randrange(360))
         self.change_angle = random.randint(-5, 5)
-        #self.rotate()
+        self.rotate()
         self.alive = True
         self.velocity.dx = math.cos(math.radians(self.angle)) * 2.5
         self.velocity.dy = math.sin(math.radians(self.angle)) * 2.5

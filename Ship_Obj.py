@@ -4,7 +4,7 @@ import Point_Velocity
 
 SHIP_TURN_AMOUNT = 3
 SHIP_THRUST_AMOUNT = 0.25
-SHIP_RADIUS = 100
+SHIP_RADIUS = 10000000
 
 SCALE = 0.5
 
@@ -39,6 +39,9 @@ class Ship(Object_Foundation.Object):
         self.velocity.dy = 0.0
         self.radius = SHIP_RADIUS
 
+    def respawn(self):
+        return [Ship()]
+
 
     def move_forward(self):
         self.speed += SHIP_THRUST_AMOUNT
@@ -46,11 +49,11 @@ class Ship(Object_Foundation.Object):
         self.velocity.dy = (math.sin(math.radians(self.angle + 90)) * self.speed)
 
     def move_backwards(self):
-        self.speed -= SHIP_THRUST_AMOUNT
-        self.center.x -= self.velocity.dx
-        self.center.y -= self.velocity.dy
-        self.velocity.dx = (math.cos(math.radians(self.angle - 90)) * -self.speed)
-        self.velocity.dy = (math.sin(math.radians(self.angle - 90)) * -self.speed)
+        self.speed -= 0.1
+        self.center.x -= 0.1
+        self.center.y -= 0.1
+        self.velocity.dx -= -0.1
+        self.velocity.dy -= -0.1
 
     def rotate_right(self):
         self.angle -= SHIP_TURN_AMOUNT

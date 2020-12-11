@@ -151,6 +151,9 @@ class Game(arcade.Window):
                         # its a hit!
                         bullet.alive = False
                         new_rock += rock.hit()
+                        for rock in new_rock:
+                            rock.create()
+                            #rock.rotate()
                         # We will wait to remove the dead objects until after we
                         # finish going through the list
         for ship in self.ship:
@@ -165,6 +168,7 @@ class Game(arcade.Window):
                         ship.death_event()
                         # Put new rocks into a list
                         new_rock += rock.hit()
+                        
                         
         # Add new rock list into the main rock list
         self.rocks += new_rock
@@ -189,6 +193,8 @@ class Game(arcade.Window):
         This function checks for keys that are being held down.
         You will need to put your own method calls in here.
         """
+        player = []
+
         for ship in self.ship:
             if arcade.key.LEFT in self.held_keys:
                 ship.rotate_left()
@@ -201,7 +207,14 @@ class Game(arcade.Window):
             
             if arcade.key.DOWN in self.held_keys:
                 ship.move_backwards()
-            
+
+            if arcade.key.ENTER in self.held_keys:
+                ship.alive = True
+                player += ship.respawn()
+                for play in player:
+                    play.create()
+                    play.draw()
+            self.ship += player
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
         #    pass
