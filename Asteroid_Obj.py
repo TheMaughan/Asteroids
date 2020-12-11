@@ -27,23 +27,6 @@ class A_Foundation(Object_Foundation.Object, ABC): #- Sets the design for the As
         self.angle = 0.0
         self.change_angle = 0.0
 
-    
-    def draw(self): #- Draw
-        # This will draw the texture object.
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.texture.width, self.texture.height, self.texture, self.angle)
-
-        if self.center.y < 0:
-            self.center.y = SCREEN_HEIGHT
-
-        if self.center.y > SCREEN_HEIGHT:
-            self.center.y = 0
-
-        if self.center.x < 0:
-            self.center.x = SCREEN_WIDTH
-            
-        if self.center.x > SCREEN_WIDTH:
-            self.center.x = 0
-
     def rotate(self): #- Rotate
         self.angle += self.change_angle
         
@@ -65,17 +48,15 @@ class Rock_Lrg(A_Foundation):
 
     #- Kill target on collision event:
     def hit(self):
-        med_1 = Rock_Med()
-        med_2 = Rock_Med()
-        sml = Rock_Sml()
         self.alive = False
+        return [Rock_Med(), Rock_Med(), Rock_Sml()]
 
         
     #- Set dementions for the target to draw at a location:
     def create(self):
         # This will load the graphics file into an arcade texture object
-        self.texture = arcade.load_texture("big.png")
-        self.size = (self.texture.width // 2) + (self.texture.height // 2)
+        self.sprite = arcade.load_texture("big.png")
+        self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.angle = math.degrees(random.randrange(360))
         self.change_angle = random.randint(-1, 1)
         self.rotate()
@@ -99,12 +80,13 @@ class Rock_Med(A_Foundation):
     #- Kills target on collision event:
     def hit(self):
         self.alive = False
+        return [Rock_Sml(), Rock_Sml()]
     
     #- Set dementions for the target to draw at a location.
     def create(self):
         # This will load the graphics file into an arcade texture object
-        self.texture = arcade.load_texture("medium.png")
-        self.size = (self.texture.width // 2) + (self.texture.height // 2)
+        self.sprite = arcade.load_texture("medium.png")
+        self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.angle = math.degrees(random.randrange(360))
         self.change_angle = random.randint(-2, 2)
         self.rotate()
@@ -126,12 +108,14 @@ class Rock_Sml(A_Foundation):
     #- Kill the target on collision event.
     def hit(self):
         self.alive = False
+        return []
+        
     
     #- Set dementions for the target to draw at a location.
     def create(self):
         # This will load the graphics file into an arcade texture object
-        self.texture = arcade.load_texture("small.png")
-        self.size = (self.texture.width // 2) + (self.texture.height // 2)
+        self.sprite = arcade.load_texture("small.png")
+        self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.angle = math.degrees(random.randrange(360))
         self.change_angle = random.randint(-5, 5)
         self.rotate()

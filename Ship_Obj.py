@@ -31,27 +31,17 @@ class Ship(Object_Foundation.Object):
         self.drag = 1
         
     def create(self):
+        self.sprite = arcade.load_texture("ship.png")
+        self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.alive = True
         self.speed = 0
         self.angle = 0
-        self.center.x = 300
-        self.center.y = 200
+        self.center.x = (SCREEN_WIDTH / 2)
+        self.center.y = (SCREEN_HEIGHT / 2)
         self.velocity.dx = 0.0
         self.velocity.dy = 0.0
+        self.radius = 60
 
-    
-    def draw(self):
-        self.sprite = arcade.load_texture("ship.png")
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width / 2, self.sprite.height / 2, self.sprite, self.angle)
-
-        if self.center.y < 0:
-            self.center.y = SCREEN_HEIGHT
-        if self.center.y > SCREEN_HEIGHT:
-            self.center.y = 0
-        if self.center.x < 0:
-            self.center.x = SCREEN_WIDTH
-        if self.center.x > SCREEN_WIDTH:
-            self.center.x = 0
 
     def move_forward(self):
         self.speed += SHIP_THRUST_AMOUNT

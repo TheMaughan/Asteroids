@@ -20,29 +20,16 @@ class Bullet(Object_Foundation.Object):
 
     #- Create the Bullet in the Rifle
     def create(self): #- Set the perameters for the bullet
+        self.sprite = arcade.load_texture("laser.png")
+        self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.ship = Ship_Obj.Ship()
         self.center.x = 0.0
         self.center.y = 0.0
-        
         self.velocity.dx = 0.0
         self.velocity.dy = 0.0
-        
         self.radius = BULLET_RADIUS
         self.life = 0.0
         self.alive = True
-
-    def draw(self): #- Draw Ball with radius of 10 px:
-        self.sprite = arcade.load_texture("laser.png")
-        arcade.draw_texture_rectangle(self.center.x, self.center.y, self.sprite.width / 2, self.sprite.height / 2, self.sprite, self.angle)
-        
-        if self.center.y < 0:
-            self.center.y = SCREEN_HEIGHT
-        if self.center.y > SCREEN_HEIGHT:
-            self.center.y = 0
-        if self.center.x < 0:
-            self.center.x = SCREEN_WIDTH
-        if self.center.x > SCREEN_WIDTH:
-            self.center.x = 0
 
     #- Sets the angle of the bullet tragectory and initiates the creation of the bullet.
     def fire(self, x, y, angle):

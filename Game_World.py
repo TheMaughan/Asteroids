@@ -67,6 +67,7 @@ class Game(arcade.Window):
         self.bullets = []
         self.ship = Ship_Obj.Ship()
         self.rocks = []
+        #self.create_rocks()
         for i in range(5):
             self.create_rocks()
         
@@ -118,16 +119,16 @@ class Game(arcade.Window):
 
     def create_rocks(self):
         lrg = Asteroid_Obj.Rock_Lrg()
-        med = Asteroid_Obj.Rock_Med()
-        sml = Asteroid_Obj.Rock_Sml()
+        #med = Asteroid_Obj.Rock_Med()
+        #sml = Asteroid_Obj.Rock_Sml()
 
         lrg.create()
-        med.create()
-        sml.create()
+        #med.create()
+        #sml.create()
 
         self.rocks.append(lrg)
-        self.rocks.append(med)
-        self.rocks.append(sml)
+        #self.rocks.append(med)
+        #self.rocks.append(sml)
 
     def check_collisions(self):
         """
@@ -135,6 +136,7 @@ class Game(arcade.Window):
         Updates scores and removes dead items.
         :return:
         """
+        new_rock = []
         for bullet in self.bullets:
             for rock in self.rocks:
 
@@ -146,12 +148,11 @@ class Game(arcade.Window):
                                 abs(bullet.center.y - rock.center.y) < too_close):
                         # its a hit!
                         bullet.alive = False
-                        rock.hit()
-                        if rock.radius == BIG_ROCK_RADIUS:
-                            rock.hit(rock.center.x, rock.center.y)
+                        new_rock += rock.hit()
+                        rock.rotate()
                         # We will wait to remove the dead objects until after we
                         # finish going through the list
-
+        self.rocks += new_rock
         # Now, check for anything that is dead, and remove it
         self.cleanup_zombies()
 
