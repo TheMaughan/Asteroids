@@ -8,17 +8,14 @@ SHIP_RADIUS = 30
 
 SCALE = 0.5
 
-# Speed limit
-MAX_SPEED = 30
-
 # How fast we accelerate
 ACCELERATION_RATE = 0.01
 
 # How fast to slow down after we letr off the key
 FRICTION = 0.02
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
 
 class Ship(Object_Foundation.Object):
     """
@@ -27,7 +24,7 @@ class Ship(Object_Foundation.Object):
     def __init__(self):
         super().__init__()
         
-        self.max = 10
+        self.max = 7
         self.drag = 1
         
     def create(self):

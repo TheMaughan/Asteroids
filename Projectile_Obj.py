@@ -4,8 +4,8 @@ from abc import ABC
 import Object_Foundation #- Main Parent Module
 import Ship_Obj
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
 
 BULLET_RADIUS = 30
 BULLET_SPEED = 10

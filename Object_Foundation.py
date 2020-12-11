@@ -3,8 +3,8 @@ from abc import ABC
 import arcade
 import Point_Velocity
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
 
 class Object(ABC): #- All travling objects share these same atrabutes:
     def __init__(self):

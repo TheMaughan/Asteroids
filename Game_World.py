@@ -11,8 +11,8 @@ import Ship_Obj
 import Projectile_Obj
 
 # These are Global constants to use throughout the game
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
 
 BULLET_RADIUS = 30
 BULLET_SPEED = 10
@@ -149,10 +149,26 @@ class Game(arcade.Window):
                         # its a hit!
                         bullet.alive = False
                         new_rock += rock.hit()
-                        rock.rotate()
                         # We will wait to remove the dead objects until after we
                         # finish going through the list
+        
+
+        for ship in self.ship:
+            for rock in self.rocks:
+                # Make sure they are both alive before checking for a collision
+                if ship.alive and rock.alive:
+                    too_close = ship.radius + rock.radius
+
+                    if (abs(ship.center.x - rock.center.x) < too_close and
+                                abs(ship.center.y - rock.center.y) < too_close):
+                        # Crash!
+                        ship.alive = False
+                        # Put new rocks into a list
+                        new_rock += rock.hit()
+                        
+        # Add new rock list into the main rock list
         self.rocks += new_rock
+
         # Now, check for anything that is dead, and remove it
         self.cleanup_zombies()
 
@@ -164,6 +180,10 @@ class Game(arcade.Window):
         for rock in self.rocks:
             if not rock.alive:
                 self.rocks.remove(rock)
+
+        for ship in self.ship:
+            if not ship.alive:
+                self.ship.remove(ship)
 
     def check_keys(self):
         """

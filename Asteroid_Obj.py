@@ -4,8 +4,8 @@ from abc import ABC
 import Object_Foundation
  
 # These are Global constants to use throughout the game
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1000
+SCREEN_HEIGHT = 800
 
 STARTING_ASTEROID_COUNT = 5
 
@@ -49,7 +49,7 @@ class Rock_Lrg(A_Foundation):
     #- Kill target on collision event:
     def hit(self):
         self.alive = False
-        return [Rock_Med(), Rock_Med(), Rock_Sml()]
+        return [Rock_Med(self.center.x, self.center.y), Rock_Med(self.center.x, self.center.y), Rock_Sml(self.center.x, self.center.y)]
 
         
     #- Set dementions for the target to draw at a location:
@@ -61,8 +61,8 @@ class Rock_Lrg(A_Foundation):
         self.change_angle = random.randint(-1, 1)
         self.rotate()
         self.alive = True
-        self.center.x = 0.0
-        self.center.y = 0.0
+        self.center.x = random.randint(0, 1)
+        self.center.y = random.randint(0, SCREEN_HEIGHT)
         self.velocity.dx = math.cos(math.radians(self.angle)) * 1.5
         self.velocity.dy = math.sin(math.radians(self.angle)) * 1.5
         self.radius = BIG_ROCK_RADIUS
@@ -72,15 +72,18 @@ class Rock_Lrg(A_Foundation):
 
 
 class Rock_Med(A_Foundation):
-    def __init__(self):
+    def __init__(self, x, y):
         super().__init__()
+        self.center.x = x
+        self.center.y = y
 
     #- Set dementions for the target to draw:
 
     #- Kills target on collision event:
     def hit(self):
         self.alive = False
-        return [Rock_Sml(), Rock_Sml()]
+        self.rotate()
+        return [Rock_Sml(self.center.x, self.center.y), Rock_Sml(self.center.x, self.center.y)]
     
     #- Set dementions for the target to draw at a location.
     def create(self):
@@ -89,19 +92,19 @@ class Rock_Med(A_Foundation):
         self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.angle = math.degrees(random.randrange(360))
         self.change_angle = random.randint(-2, 2)
-        self.rotate()
+        #self.rotate()
         self.alive = True
-        self.center.x = 0.0
-        self.center.y = 0.0
         self.velocity.dx = math.cos(math.radians(self.angle)) * 2
         self.velocity.dy = math.sin(math.radians(self.angle)) * 2
         self.radius = MEDIUM_ROCK_RADIUS
 
 
 class Rock_Sml(A_Foundation):
-    def __init__(self):
+    def __init__(self, x, y):
         super().__init__()
         self.angle = 0
+        self.center.x = x
+        self.center.y = y
     #- Set dementions for the Safe_Target to draw:
 
 
@@ -118,10 +121,8 @@ class Rock_Sml(A_Foundation):
         self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.angle = math.degrees(random.randrange(360))
         self.change_angle = random.randint(-5, 5)
-        self.rotate()
+        #self.rotate()
         self.alive = True
-        self.center.x = random.randint(0, 1)
-        self.center.y = random.randint(0, SCREEN_HEIGHT)
         self.velocity.dx = math.cos(math.radians(self.angle)) * 2.5
         self.velocity.dy = math.sin(math.radians(self.angle)) * 2.5
         self.radius = SMALL_ROCK_RADIUS
