@@ -25,7 +25,7 @@ class Ship(Object_Foundation.Object):
         super().__init__()
         
         self.max = 7
-        self.drag = 1
+        self.drag = 0.1
         
     def create(self):
         self.sprite = arcade.load_texture("ship.png")
@@ -40,20 +40,29 @@ class Ship(Object_Foundation.Object):
         self.radius = SHIP_RADIUS
 
     def respawn(self):
-        return [Ship()]
-
+        return [Ship()]        
 
     def move_forward(self):
-        self.speed += SHIP_THRUST_AMOUNT
+        self.speed += self.drag
         self.velocity.dx = (math.cos(math.radians(self.angle + 90)) * self.speed)
         self.velocity.dy = (math.sin(math.radians(self.angle + 90)) * self.speed)
 
     def move_backwards(self):
-        self.speed -= 0.1
-        self.center.x -= 0.1
-        self.center.y -= 0.1
-        self.velocity.dx -= -0.1
-        self.velocity.dy -= -0.1
+
+        if self.speed > 0:
+            self.speed -= self.drag
+        if self.speed < 0:
+            self.speed += self.drag
+
+        if self.velocity.dx > 0:
+            self.velocity.dx -= self.drag
+        if self.velocity.dx < 0:
+            self.velocity.dx += self.drag
+
+        if self.velocity.dy > 0:
+            self.velocity.dy -= self.drag
+        if self.velocity.dy < 0:
+            self.velocity.dy += self.drag
 
     def rotate_right(self):
         self.angle -= SHIP_TURN_AMOUNT
