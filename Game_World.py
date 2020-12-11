@@ -65,7 +65,7 @@ class Game(arcade.Window):
         self.held_keys = set()
         
         self.bullets = []
-        self.ship = Ship_Obj.Ship()
+        self.ship = [Ship_Obj.Ship()]
         self.rocks = []
         #self.create_rocks()
         for i in range(5):
@@ -88,7 +88,8 @@ class Game(arcade.Window):
         for bullet in self.bullets:
             bullet.draw()
 
-        self.ship.draw()
+        for ship in self.ship:
+            ship.draw()
 
         # TODO: draw each object
 
@@ -99,10 +100,8 @@ class Game(arcade.Window):
         """
 
         self.check_keys()
-        self.ship.advance()
         self.cleanup_zombies()
         self.check_collisions()
-        #self.ship.move()
 
         for rock in self.rocks:
             rock.advance()
@@ -111,6 +110,9 @@ class Game(arcade.Window):
         for bullet in self.bullets:
             bullet.advance()
             bullet.set_life()
+
+        for ship in self.ship:
+            ship.advance()
 
 
         # TODO: Tell everything to advance or move forward one step in time
@@ -151,8 +153,6 @@ class Game(arcade.Window):
                         new_rock += rock.hit()
                         # We will wait to remove the dead objects until after we
                         # finish going through the list
-        
-
         for ship in self.ship:
             for rock in self.rocks:
                 # Make sure they are both alive before checking for a collision
@@ -162,7 +162,7 @@ class Game(arcade.Window):
                     if (abs(ship.center.x - rock.center.x) < too_close and
                                 abs(ship.center.y - rock.center.y) < too_close):
                         # Crash!
-                        ship.alive = False
+                        ship.death_event()
                         # Put new rocks into a list
                         new_rock += rock.hit()
                         
@@ -180,7 +180,6 @@ class Game(arcade.Window):
         for rock in self.rocks:
             if not rock.alive:
                 self.rocks.remove(rock)
-
         for ship in self.ship:
             if not ship.alive:
                 self.ship.remove(ship)
@@ -190,18 +189,18 @@ class Game(arcade.Window):
         This function checks for keys that are being held down.
         You will need to put your own method calls in here.
         """
-        
-        if arcade.key.LEFT in self.held_keys:
-            self.ship.rotate_left()
+        for ship in self.ship:
+            if arcade.key.LEFT in self.held_keys:
+                ship.rotate_left()
             
-        if arcade.key.RIGHT in self.held_keys:
-            self.ship.rotate_right()
+            if arcade.key.RIGHT in self.held_keys:
+                ship.rotate_right()
             
-        if arcade.key.UP in self.held_keys:
-            self.ship.move_forward()
+            if arcade.key.UP in self.held_keys:
+                ship.move_forward()
             
-        if arcade.key.DOWN in self.held_keys:
-            self.ship.move_backwards()
+            if arcade.key.DOWN in self.held_keys:
+                ship.move_backwards()
             
         # Machine gun mode...
         #if arcade.key.SPACE in self.held_keys:
@@ -213,15 +212,16 @@ class Game(arcade.Window):
         Puts the current key in the set of keys that are being held.
         You will need to add things here to handle firing the bullet.
         """
-        if self.ship:
-            self.held_keys.add(key)
-            #self.ship.move()
+        for ship in self.ship:
+            if ship:
+                self.held_keys.add(key)
+                #self.ship.move()
             
-            if key == arcade.key.SPACE:
-                bullet = Projectile_Obj.Bullet()
-                bullet.fire(self.ship.center.x, self.ship.center.y, self.ship.angle)
-                self.bullets.append(bullet)
-                # TODO: Fire the bullet here!
+                if key == arcade.key.SPACE:
+                    bullet = Projectile_Obj.Bullet()
+                    bullet.fire(ship.center.x, ship.center.y, ship.angle)
+                    self.bullets.append(bullet)
+                    # TODO: Fire the bullet here!
                 
 
     def on_key_release(self, key: int, modifiers: int):

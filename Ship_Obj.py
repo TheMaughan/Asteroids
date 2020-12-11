@@ -4,7 +4,7 @@ import Point_Velocity
 
 SHIP_TURN_AMOUNT = 3
 SHIP_THRUST_AMOUNT = 0.25
-SHIP_RADIUS = 30
+SHIP_RADIUS = 100
 
 SCALE = 0.5
 
@@ -29,7 +29,7 @@ class Ship(Object_Foundation.Object):
         
     def create(self):
         self.sprite = arcade.load_texture("ship.png")
-        self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
+        #self.size = (self.sprite.width // 2) + (self.sprite.height // 2)
         self.alive = True
         self.speed = 0
         self.angle = 0
@@ -37,7 +37,7 @@ class Ship(Object_Foundation.Object):
         self.center.y = (SCREEN_HEIGHT / 2)
         self.velocity.dx = 0.0
         self.velocity.dy = 0.0
-        self.radius = 60
+        self.radius = SHIP_RADIUS
 
 
     def move_forward(self):
