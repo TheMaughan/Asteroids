@@ -1,8 +1,5 @@
 """
-File: asteroids.py
-Original Author: Br. Burton
-Co-Author: Bryce Maughan
-
+Created by Bryce Maughan
 This program implements a version of the asteroids game.
 """
 import arcade
@@ -49,8 +46,6 @@ class Game(arcade.Window):
 
     This class will then call the appropriate functions of
     each of the above classes.
-
-    You are welcome to modify anything in this class.
     """
 
     def __init__(self, width, height):
@@ -70,8 +65,6 @@ class Game(arcade.Window):
         #self.create_rocks()
         for i in range(5):
             self.create_rocks()
-        
-        # TODO: declare anything here you need the game class to track
 
     def on_draw(self):
         """
@@ -90,8 +83,6 @@ class Game(arcade.Window):
 
         for ship in self.ship:
             ship.draw()
-
-        # TODO: draw each object
 
     def update(self, delta_time):
         """
@@ -113,11 +104,6 @@ class Game(arcade.Window):
 
         for ship in self.ship:
             ship.advance()
-
-
-        # TODO: Tell everything to advance or move forward one step in time
-
-        # TODO: Check for collisions
 
     def create_rocks(self):
         lrg = Asteroid_Obj.Rock_Lrg()
@@ -191,7 +177,6 @@ class Game(arcade.Window):
     def check_keys(self):
         """
         This function checks for keys that are being held down.
-        You will need to put your own method calls in here.
         """
         player = []
 
@@ -223,7 +208,6 @@ class Game(arcade.Window):
     def on_key_press(self, key: int, modifiers: int):
         """
         Puts the current key in the set of keys that are being held.
-        You will need to add things here to handle firing the bullet.
         """
         for ship in self.ship:
             if ship:
@@ -234,7 +218,6 @@ class Game(arcade.Window):
                     bullet = Projectile_Obj.Bullet()
                     bullet.fire(ship.center.x, ship.center.y, ship.angle)
                     self.bullets.append(bullet)
-                    # TODO: Fire the bullet here!
                 
 
     def on_key_release(self, key: int, modifiers: int):
@@ -245,6 +228,6 @@ class Game(arcade.Window):
             self.held_keys.remove(key)
 
 
-# Creates the game and starts it going
+# Create the game object
 window = Game(SCREEN_WIDTH, SCREEN_HEIGHT)
 arcade.run()
