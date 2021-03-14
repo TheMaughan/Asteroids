@@ -10,6 +10,7 @@ import Projectile_Obj
 # These are Global constants to use throughout the game
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 800
+SCREEN_TITLE = "Implement Views Example"
 
 BULLET_RADIUS = 30
 BULLET_SPEED = 10
@@ -40,7 +41,7 @@ SMALL_ROCK_RADIUS = 2
 #import Projectile_Obj
 
 
-class Game(arcade.Window):
+class Game(arcade.View):
     """
     This class handles all the game callbacks and interaction
 
@@ -48,15 +49,18 @@ class Game(arcade.Window):
     each of the above classes.
     """
 
-    def __init__(self, width, height):
+    def __init__(self):
         """
         Sets up the initial conditions of the game
         :param width: Screen width
         :param height: Screen height
         """
-        super().__init__(width, height)
+        super().__init__()
         arcade.set_background_color(arcade.color.SMOKY_BLACK)
         
+        # Don't show the mouse cursor
+        self.window.set_mouse_visible(False)
+
         self.held_keys = set()
         
         self.bullets = []
@@ -228,6 +232,34 @@ class Game(arcade.Window):
             self.held_keys.remove(key)
 
 
-# Create the game object
-window = Game(SCREEN_WIDTH, SCREEN_HEIGHT)
-arcade.run()
+class InstructionView(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.csscolor.DARK_SLATE_BLUE)
+
+        arcade.set_viewport(0, SCREEN_WIDTH - 1, 0, SCREEN_HEIGHT - 1)
+    
+    def on_draw(self):
+        """ Draw this view """
+        arcade.start_render()
+        arcade.draw_text("Instructions Screen", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                         arcade.color.WHITE, font_size=50, anchor_x="center")
+        arcade.draw_text("Click to advance", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2-75,
+                         arcade.color.WHITE, font_size=20, anchor_x="center")
+
+    def on_mouse_press(self, _x, _y, _button, _modifiers):
+        """ If the user presses the mouse button, start the game. """
+        game_view = Game()
+        self.window.show_view(game_view)
+
+
+
+
+def main():
+    """ Main method """
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    start_view = InstructionView()
+    window.show_view(start_view)
+    arcade.run()
+
+if __name__ == "__main__":
+    main()
